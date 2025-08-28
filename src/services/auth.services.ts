@@ -19,7 +19,7 @@ class AuthService {
         }
         
         if (user.status === "unactive") {
-      throw new Error('User is inactive, please contact admin');
+      throw new Error('User is unactive, please contact admin');
     }
 
 
