@@ -35,6 +35,8 @@ const userSchema: Schema = new Schema(
     status: { type: String, enum: ["Active", "unActive", "admin"], default: "Active" },
     // is_admin: { type: Boolean, default: false },
     is_deleted: { type: Boolean, default: false },
+    createdAt : {type:String},
+    updatedAt : {type:String},
   },
 //   { timestamps: true } 
 );

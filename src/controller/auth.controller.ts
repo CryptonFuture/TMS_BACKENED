@@ -21,12 +21,17 @@ class AuthController {
                 user: loginUser.user,
             });
         } catch (error: any) {
-            if (error.message === 'Invalid username or password') {
-                res.status(401).json({ message: error.message }); // Unauthorized response
-                return; 
-            }
-            res.status(500).json({ message: 'Internal server error', error: error.message });
-        }
+           if (error.message === 'Invalid email or password' || error.message === 'Invalid username or password') {
+        res.status(401).json({ message: 'Invalid email or password' });
+        return;
+      }
+      if (error.message === 'User is unactive, please contact admin') {
+  res.status(403).json({ message: 'User is unactive, please contact admin' });
+  return;
+}
+
+      res.status(500).json({ message: 'Internal server error', error: error.message });
+    }
     }
    
 
