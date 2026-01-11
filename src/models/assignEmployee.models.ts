@@ -1,23 +1,45 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IAssignEmployee extends Document {
-  userEmployeeId:mongoose.Schema.Types.ObjectId;
+  userEmployeeId: mongoose.Schema.Types.ObjectId;
+  clientId: mongoose.Schema.Types.ObjectId;
   description?: string;
-  is_deleted: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
 const assignEmployeeSchema: Schema = new Schema(
-
   {
-    userEmployeeId: { type:mongoose.Schema.Types.ObjectId, required: true,ref:'User' },
-    description: { type: String },
-    is_deleted: { type: Boolean, default: false },
-    createdAt : {type:String},
-    updatedAt : {type:String},
+    userEmployeeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'User'
+    },
+    clientId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Client'
+    },
+    description: {
+      type: String
+    },
+    is_deleted: {
+      type: Boolean,
+      default: false
+    }
   },
-//   { timestamps: true } 
+  {
+    timestamps: true
+  }
 );
 
-export default mongoose.model<IAssignEmployee>('AssignEmployee', assignEmployeeSchema);
+
+assignEmployeeSchema.index(
+  { userEmployeeId: 1, clientId: 1 },
+  { unique: true }
+);
+
+export default mongoose.model<IAssignEmployee>(
+  'AssignEmployee',
+  assignEmployeeSchema
+);

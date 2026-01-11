@@ -19,10 +19,10 @@ const taskSchema: Schema = new Schema(
     refreshToken: { type: String, default: null },
     status: { type: String, enum: ["Active", "unActive", "admin"], default: "Active" },
     is_deleted: { type: Boolean, default: false },
-    createdAt : {type:String},
-    updatedAt : {type:String},
+
+    
   },
-//   { timestamps: true } 
+  { timestamps: true } 
 );
 
 export default mongoose.model<ITask>('Task', taskSchema);

@@ -1,28 +1,50 @@
-import  AssignEmployee,{ IAssignEmployee } from '../models/assignEmployee.models';
+import AssignEmployee, { IAssignEmployee } from '../models/assignEmployee.models';
 
 class AssignEmployeeRepository {
-    public async getAll(): Promise<any> {
-        return AssignEmployee.find().populate('userEmployeeId');
-    }
 
-    public async getById(id: string): Promise<any> {
-        return AssignEmployee.findById(id).populate('userEmployeeId');
-        
-        }
+  public async getAll(): Promise<IAssignEmployee[]> {
+    return AssignEmployee
+      .find({ is_deleted: false })
+      .populate('userEmployeeId')
+      .populate('clientId');
+  }
 
+  public async getById(id: string): Promise<IAssignEmployee | null> {
+    return AssignEmployee
+      .findById(id)
+      .populate('userEmployeeId')
+      .populate('clientId');
+  }
 
-    public async create(assignEmployee: IAssignEmployee): Promise<any> {
-        const newAssignEmployee = new AssignEmployee(assignEmployee);
-        return newAssignEmployee.save();
-    }
+  public async findOne(filter: any): Promise<IAssignEmployee | null> {
+    return AssignEmployee.findOne(filter);
+  }
 
-    public async update(id: string, assignEmployee: Partial<IAssignEmployee>): Promise<any> {
-        return AssignEmployee.findByIdAndUpdate(id, assignEmployee, { new: true });
-    }
+  public async create(
+    assignEmployee: IAssignEmployee
+  ): Promise<IAssignEmployee> {
+    const newAssignEmployee = new AssignEmployee(assignEmployee);
+    return newAssignEmployee.save();
+  }
 
-    public async delete(id: string): Promise<any> {
-        return AssignEmployee.findByIdAndDelete(id);
-    }
- 
+  public async update(
+    id: string,
+    assignEmployee: Partial<IAssignEmployee>
+  ): Promise<IAssignEmployee | null> {
+    return AssignEmployee.findByIdAndUpdate(
+      id,
+      assignEmployee,
+      { new: true }
+    );
+  }
+
+  public async delete(id: string): Promise<IAssignEmployee | null> {
+    return AssignEmployee.findByIdAndUpdate(
+      id,
+      { is_deleted: true },
+      { new: true }
+    );
+  }
 }
+
 export default new AssignEmployeeRepository();
