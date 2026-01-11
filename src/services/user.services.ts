@@ -1,26 +1,39 @@
-    import { IUser } from '../models/user.models'; 
-    import UserRepository from '../repository/user.repository';
+import { IUser } from '../models/user.models';
+import UserRepository from '../repository/user.repository';
 
-    class UserService {
-        public async getAllUsers(): Promise<IUser> {
-            return UserRepository.getAll();
-        }
+class UserService {
 
-        public async getUserById(id: string): Promise<IUser> {
-            return UserRepository.getById(id);
-        }
+  public async getAllUsers() {
+    return UserRepository.getAll();
+  }
 
-        public async createUser(User: IUser): Promise<IUser> {
-            return UserRepository.create(User);
-        }
+  public async getUserById(id: string) {
+    return UserRepository.getById(id);
+  }
 
-        public async updateUser(id: string, User: Partial<IUser>): Promise<IUser> {
-            return UserRepository.update(id, User);
-        }
+  public async createUser(user: any) {
 
-        public async deleteUser(id: string): Promise<IUser> {
-            return UserRepository.delete(id);
-        }
+    // 🔴 password mismatch
+    if (user.password !== user.confirmPass) {
+      throw new Error('PASSWORD_MISMATCH');
     }
 
-    export default new UserService();
+    // 🔴 duplicate email
+    const existing = await UserRepository.getByEmail(user.email);
+    if (existing) {
+      throw new Error('EMAIL_EXISTS');
+    }
+
+    return UserRepository.create(user);
+  }
+
+  public async updateUser(id: string, user: Partial<IUser>) {
+    return UserRepository.update(id, user);
+  }
+
+  public async deleteUser(id: string) {
+    return UserRepository.delete(id);
+  }
+}
+
+export default new UserService();

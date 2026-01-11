@@ -26,13 +26,30 @@ class UserController {
     }
 
     public async createUser(req: Request, res: Response): Promise<any> {
-        try {
-            const newUser = await UserService.createUser(req.body);
-            res.status(201).json(newUser);
-        } catch (error:any) {
-            res.status(500).json({ message: error.message });
-        }
+  try {
+    const newUser = await UserService.createUser(req.body);
+    res.status(201).json(newUser);
+
+  } catch (error: any) {
+
+    if (error.message === 'EMAIL_EXISTS') {
+      return res.status(400).json({
+        field: 'email',
+        message: 'Email already exists'
+      });
     }
+
+    if (error.message === 'PASSWORD_MISMATCH') {
+      return res.status(400).json({
+        field: 'password',
+        message: 'Password and Confirm Password do not match'
+      });
+    }
+
+    res.status(500).json({ message: error.message });
+  }
+}
+
 
     public async updateUser(req: Request, res: Response): Promise<any> {
         const { id } = req.params;
