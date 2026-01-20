@@ -79,7 +79,6 @@ class AssignEmployeeController {
       });
     }
   }
-
   public async updateAssignEmployee(req: Request, res: Response): Promise<any> {
     const { id } = req.params;
 
@@ -96,16 +95,17 @@ class AssignEmployeeController {
 
       res.status(200).json({
         success: true,
-        message: 'AssignEmployee updated successfully',
+        message: 'Assign Employee & Clients updated successfully',
         data: updatedAssignEmployee
       });
     } catch (error: any) {
-      res.status(500).json({
+      res.status(error.status || 500).json({
         success: false,
         message: error.message || 'Server Error'
       });
     }
   }
+
 
   public async deleteAssignEmployee(req: Request, res: Response): Promise<any> {
     const { id } = req.params;

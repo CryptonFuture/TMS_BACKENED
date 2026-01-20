@@ -20,35 +20,35 @@ class UserController {
             } else {
                 res.status(200).json(User);
             }
-        } catch (error:any) {
+        } catch (error: any) {
             res.status(500).json({ message: error.message });
         }
     }
 
     public async createUser(req: Request, res: Response): Promise<any> {
-  try {
-    const newUser = await UserService.createUser(req.body);
-    res.status(201).json(newUser);
+        try {
+            const newUser = await UserService.createUser(req.body);
+            res.status(201).json(newUser);
 
-  } catch (error: any) {
+        } catch (error: any) {
 
-    if (error.message === 'EMAIL_EXISTS') {
-      return res.status(400).json({
-        field: 'email',
-        message: 'Email already exists'
-      });
+            if (error.message === 'EMAIL_EXISTS') {
+                return res.status(400).json({
+                    field: 'email',
+                    message: 'Email already exists'
+                });
+            }
+
+            if (error.message === 'PASSWORD_MISMATCH') {
+                return res.status(400).json({
+                    field: 'password',
+                    message: 'Password and Confirm Password do not match'
+                });
+            }
+
+            res.status(500).json({ message: error.message });
+        }
     }
-
-    if (error.message === 'PASSWORD_MISMATCH') {
-      return res.status(400).json({
-        field: 'password',
-        message: 'Password and Confirm Password do not match'
-      });
-    }
-
-    res.status(500).json({ message: error.message });
-  }
-}
 
 
     public async updateUser(req: Request, res: Response): Promise<any> {
@@ -60,12 +60,12 @@ class UserController {
             } else {
                 res.status(200).json(updatedUser);
             }
-        } catch (error:any) {
+        } catch (error: any) {
             res.status(500).json({ message: error.message });
         }
     }
 
-    public async deleteUser(req: Request, res: Response): Promise<any>  {
+    public async deleteUser(req: Request, res: Response): Promise<any> {
         const { id } = req.params;
         try {
             const deletedUser = await UserService.deleteUser(id);
@@ -74,10 +74,20 @@ class UserController {
             } else {
                 res.status(200).json({ message: 'User deleted successfully' });
             }
-        } catch (error:any) {
+        } catch (error: any) {
             res.status(500).json({ message: error.message });
         }
     }
+
+    public async getAvailableEmployees(req: Request, res: Response): Promise<any> {
+        try {
+            const users = await UserService.getAvailableEmployees();
+            res.status(200).json(users);
+        } catch (error: any) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
 
 }
 

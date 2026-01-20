@@ -1,8 +1,10 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IAssignEmployee extends Document {
+  
   userEmployeeId: mongoose.Schema.Types.ObjectId;
   clientId: mongoose.Schema.Types.ObjectId;
+  taskId: mongoose.Schema.Types.ObjectId;
   description?: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -19,6 +21,11 @@ const assignEmployeeSchema: Schema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Client'
+    },
+    taskId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Task'
     },
     description: {
       type: String

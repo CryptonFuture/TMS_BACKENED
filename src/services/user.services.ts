@@ -34,6 +34,11 @@ class UserService {
   public async deleteUser(id: string) {
     return UserRepository.delete(id);
   }
+
+  public async getAvailableEmployees() {
+  return UserRepository.getAvailableEmployees();
+}
+
 }
 
 export default new UserService();

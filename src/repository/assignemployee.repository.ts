@@ -2,19 +2,21 @@ import AssignEmployee, { IAssignEmployee } from '../models/assignEmployee.models
 
 class AssignEmployeeRepository {
 
-  public async getAll(): Promise<IAssignEmployee[]> {
-    return AssignEmployee
-      .find({ is_deleted: false })
-      .populate('userEmployeeId')
-      .populate('clientId');
-  }
+public async getAll(): Promise<IAssignEmployee[]> {
+  return AssignEmployee
+    .find({ is_deleted: false })
+    .populate('userEmployeeId', '_id name')
+    .populate('clientId', '_id name')
+    .populate('taskId', '_id name');
+}
 
-  public async getById(id: string): Promise<IAssignEmployee | null> {
-    return AssignEmployee
-      .findById(id)
-      .populate('userEmployeeId')
-      .populate('clientId');
-  }
+public async getById(id: string): Promise<IAssignEmployee | null> {
+  return AssignEmployee
+    .findById(id)
+    .populate('userEmployeeId', '_id name')
+    .populate('clientId', '_id name')
+    .populate('taskId', '_id name')
+}
 
   public async findOne(filter: any): Promise<IAssignEmployee | null> {
     return AssignEmployee.findOne(filter);
@@ -39,11 +41,7 @@ class AssignEmployeeRepository {
   }
 
   public async delete(id: string): Promise<IAssignEmployee | null> {
-    return AssignEmployee.findByIdAndUpdate(
-      id,
-      { is_deleted: true },
-      { new: true }
-    );
+    return AssignEmployee.findByIdAndDelete(id);
   }
 }
 

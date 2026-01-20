@@ -5,11 +5,15 @@ const UserRouter = express.Router();
 
 // CRUD routes
 UserRouter.get('/getall', userController.getAllUsers);
+
 UserRouter.get('/getbyId/:id', userController.getUserById);
+
+UserRouter.get('/available', userController.getAvailableEmployees);
+
 UserRouter.post('/create', userController.createUser);
+
 UserRouter.put('/update/:id', userController.updateUser);
+
 UserRouter.delete('/delete/:id', userController.deleteUser);
 
 export default UserRouter;
-
- 
